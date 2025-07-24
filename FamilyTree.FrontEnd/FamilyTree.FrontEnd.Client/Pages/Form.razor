@@ -13,8 +13,8 @@
         <ValidationMessage For="@(() => formData.Name)" />
     </div>
     <div>
-        <label for="email">Email:</label>
-        <InputText id="email" @bind-Value="formData.Surname" class="form-control" />
+        <label for="surname">Surname:</label>
+        <InputText id="surname" @bind-Value="formData.Surname" class="form-control" />
         <ValidationMessage For="@(() => formData.Surname)" />
     </div>
     <div>
@@ -32,7 +32,7 @@
     <ul>
         <li><strong>Name:</strong> @formData.Name</li>
         <li><strong>Surname:</strong> @formData.Surname</li>
-        <li><strong>Age:</strong> @formData.DeathDate?.ToShortDateString()</li>
+        <li><strong>Death Date:</strong> @formData.DeathDate?.ToShortDateString()</li>
     </ul>
 }
 
