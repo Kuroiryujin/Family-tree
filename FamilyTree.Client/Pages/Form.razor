@@ -1,0 +1,82 @@
+﻿@page "/form"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Form with Validation</h3>
+
+<EditForm EditContext="editContext"  OnValidSubmit="HandleValidSubmit" FormName="MainForm">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="_formData.Name" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.Name)"/>
+    </div>
+    <div>
+        <label for="Surname">Surname:</label>
+        <InputText id="Surname" @bind-Value="_formData.Surname" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.Surname)"/>
+    </div>
+    <div>
+        <label for="birthDate">Birth Date:</label>
+        <InputDate id="birthDate" @bind-Value="_formData.BirthDate" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.BirthDate)"/>
+    </div>
+    <div>
+        <label for="deathDate">Death Date:</label>
+        <InputDate id="deathDate" @bind-Value="_formData.DeathDate" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.DeathDate)"/>
+    </div>
+    <br/>
+    <button class="btn btn-primary">Submit</button>
+</EditForm>
+
+@if (_submitted)
+{
+    <p>You submitted successfully!</p>
+    <ul>
+        <li><strong>Name:</strong> @_formData?.Name</li>
+        <li><strong>Surname:</strong> @_formData?.Surname</li>
+        <li><strong>Birth Date:</strong> @_formData?.BirthDate?.ToShortDateString()</li>
+        <li><strong>Death Date:</strong> @_formData?.DeathDate?.ToShortDateString()</li>
+    </ul>
+}
+
+@code {
+    private FormData? _formData;
+    private bool _submitted = false;
+    private EditContext? editContext;
+    private ValidationMessageStore? messageStore;
+
+    protected override void OnInitialized()
+    {
+        _formData ??= new();
+        editContext = new(_formData);
+        base.OnInitialized();
+    }
+
+
+    private void HandleValidSubmit()
+    {
+        _submitted = true;
+        // Logic for handling submitted data
+    }
+
+    public class FormData
+    {
+        [Required(ErrorMessage = "Name is required")]
+        public string? Name { get; set; }
+
+        [Required(ErrorMessage = "Surname is required")]
+        public string? Surname { get; set; }
+
+        [Required(ErrorMessage = "Birth Date is required")]
+        [DataType(DataType.Date)]
+        public DateTime? BirthDate { get; set; }
+
+        [Required(ErrorMessage = "Death Date is required")]
+        [DataType(DataType.Date)]
+        public DateTime? DeathDate { get; set; }
+    }
+
+}
