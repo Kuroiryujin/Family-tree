@@ -3,7 +3,7 @@
 
 <h3>Form with Validation</h3>
 
-<EditForm EditContext="editContext"  OnValidSubmit="HandleValidSubmit" FormName="MainForm">
+<EditForm Model="_formData" OnValidSubmit="HandleValidSubmit" FormName="MainForm">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
 
@@ -45,13 +45,10 @@
 @code {
     private FormData? _formData;
     private bool _submitted = false;
-    private EditContext? editContext;
-    private ValidationMessageStore? messageStore;
 
     protected override void OnInitialized()
     {
         _formData ??= new();
-        editContext = new(_formData);
         base.OnInitialized();
     }
 
