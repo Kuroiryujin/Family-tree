@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTree.Client", "FamilyTree.Client\FamilyTree.Client.csproj", "{A353538E-1D4E-4093-861F-265103560C7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTree.Api", "FamilyTree.Api\FamilyTree.Api.csproj", "{334A099B-CD1C-4B27-B91E-4381A5FC868D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A353538E-1D4E-4093-861F-265103560C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A353538E-1D4E-4093-861F-265103560C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A353538E-1D4E-4093-861F-265103560C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
