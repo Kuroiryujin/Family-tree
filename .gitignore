@@ -59,3 +59,5 @@ wwwroot/_framework/
 wwwroot/_content/
 wwwroot/service-worker.published.js
 wwwroot/service-worker-assets.js
+
+   *.sqlite
