@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTree.Client", "Family
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTree.Api", "FamilyTree.Api\FamilyTree.Api.csproj", "{334A099B-CD1C-4B27-B91E-4381A5FC868D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTree.Shared", "FamilyTree.Shared\FamilyTree.Shared.csproj", "{38D0D58C-880D-419D-9FA3-7F4EE05CA2D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{334A099B-CD1C-4B27-B91E-4381A5FC868D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D0D58C-880D-419D-9FA3-7F4EE05CA2D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D0D58C-880D-419D-9FA3-7F4EE05CA2D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D0D58C-880D-419D-9FA3-7F4EE05CA2D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D0D58C-880D-419D-9FA3-7F4EE05CA2D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
