@@ -53,10 +53,25 @@
     }
 
 
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
         _submitted = true;
-        // Logic for handling submitted data
+        var client = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7160/api/People");
+        var json = System.Text.Json.JsonSerializer.Serialize(_formData);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        request.Content = content;
+        try
+        {
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+            throw;
+        }
     }
 
     public class FormData
