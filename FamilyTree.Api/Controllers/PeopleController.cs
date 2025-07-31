@@ -29,7 +29,7 @@ namespace FamilyTree.Api.Controllers
         }
 
         // GET: api/people/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<PersonDto>> GetPerson(int id)
         {
             var person = await _context.People.FindAsync(id);
@@ -47,7 +47,7 @@ namespace FamilyTree.Api.Controllers
         }
 
         // PUT: api/people/{id}
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> PutPerson(int id, PersonDto person)
         {
             if (id != person.Id) return BadRequest();
@@ -67,7 +67,7 @@ namespace FamilyTree.Api.Controllers
         }
 
         // DELETE: api/people/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeletePerson(int id)
         {
             var person = await _context.People.FindAsync(id);
