@@ -9,6 +9,10 @@ public class PersonDto
     public string LastName { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime? DeathDate { get; set; }
+    
+    public PersonDto()
+    {
+    }
 
     public PersonDto(PersonEntity personEntity)
     {

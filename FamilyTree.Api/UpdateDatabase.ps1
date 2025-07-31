@@ -1,2 +1,2 @@
-dotnet ef migrations add RemoveParentID
+dotnet ef migrations add TableNameChange
 dotnet ef database update

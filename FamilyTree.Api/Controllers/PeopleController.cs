@@ -22,10 +22,10 @@ namespace FamilyTree.Api.Controllers
         public async Task<ActionResult<IEnumerable<PersonDto>>> GetPeople()
 
         {
-            var personEntities = await _context.People.ToListAsync();
-            var personDtos = personEntities.Select(person => new PersonDto(person)).ToList();
+            var personEntity = await _context.People.ToListAsync();
+            var personDto = personEntity.Select(person => new PersonDto(person)).ToList();
 
-            return Ok(personDtos);
+            return Ok(personDto);
         }
 
         // GET: api/people/{id}
@@ -51,7 +51,7 @@ namespace FamilyTree.Api.Controllers
         public async Task<IActionResult> PutPerson(int id, PersonDto person)
         {
             if (id != person.Id) return BadRequest();
-            _context.Entry(person).State = EntityState.Modified;
+            _context.Entry(new PersonEntity(person)).State = EntityState.Modified;
 
             try
             {
