@@ -1,4 +1,4 @@
-using FamilyTree.Api.Models;
+using FamilyTree.Shared.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FamilyTree.Api.Data
@@ -9,7 +9,7 @@ namespace FamilyTree.Api.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
         // Add DbSet<T> here for each entity
-        public DbSet<Person> People { get; set; }
+        public DbSet<PersonEntity> People { get; set; }
 
         // Optional: Configure model if needed
         protected override void OnModelCreating(ModelBuilder modelBuilder)

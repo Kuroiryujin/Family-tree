@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FamilyTree.Api.Data;
-using FamilyTree.Api.Models;
+using FamilyTree.Shared.Dto;
+using FamilyTree.Shared.Entity;
 
 namespace FamilyTree.Api.Controllers
 {
@@ -18,32 +19,36 @@ namespace FamilyTree.Api.Controllers
 
         // GET: api/people
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
+        public async Task<ActionResult<IEnumerable<PersonDto>>> GetPeople()
+
         {
-            return await _context.People.ToListAsync();
+            var personEntities = await _context.People.ToListAsync();
+            var personDtos = personEntities.Select(person => new PersonDto(person)).ToList();
+
+            return Ok(personDtos);
         }
 
         // GET: api/people/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(int id)
+        public async Task<ActionResult<PersonDto>> GetPerson(int id)
         {
             var person = await _context.People.FindAsync(id);
             if (person == null) return NotFound();
-            return person;
+            return new PersonDto(person);
         }
 
         // POST: api/people
         [HttpPost]
-        public async Task<ActionResult<Person>> PostPerson(Person person)
+        public async Task<ActionResult<PersonDto>> PostPerson(PersonDto person)
         {
-            _context.People.Add(person);
+            _context.People.Add(new PersonEntity(person));
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetPerson", new { id = person.Id }, person);
         }
 
         // PUT: api/people/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerson(int id, Person person)
+        public async Task<IActionResult> PutPerson(int id, PersonDto person)
         {
             if (id != person.Id) return BadRequest();
             _context.Entry(person).State = EntityState.Modified;
