@@ -1,5 +1,6 @@
 ﻿@page "/form"
 @using System.ComponentModel.DataAnnotations
+@using FamilyTree.Shared.Dto
 
 <h3>Form with Validation</h3>
 
@@ -9,13 +10,13 @@
 
     <div>
         <label for="name">Name:</label>
-        <InputText id="name" @bind-Value="_formData.Name" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.Name)"/>
+        <InputText id="name" @bind-Value="_formData.FirstName" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.FirstName)"/>
     </div>
     <div>
         <label for="Surname">Surname:</label>
-        <InputText id="Surname" @bind-Value="_formData.Surname" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.Surname)"/>
+        <InputText id="Surname" @bind-Value="_formData.LastName" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.LastName)"/>
     </div>
     <div>
         <label for="birthDate">Birth Date:</label>
@@ -35,8 +36,8 @@
 {
     <p>You submitted successfully!</p>
     <ul>
-        <li><strong>Name:</strong> @_formData?.Name</li>
-        <li><strong>Surname:</strong> @_formData?.Surname</li>
+        <li><strong>Name:</strong> @_formData?.FirstName</li>
+        <li><strong>Surname:</strong> @_formData?.LastName</li>
         <li><strong>Birth Date:</strong> @_formData?.BirthDate?.ToShortDateString()</li>
         <li><strong>Death Date:</strong> @_formData?.DeathDate?.ToShortDateString()</li>
     </ul>
@@ -56,16 +57,29 @@
     private async Task HandleValidSubmit()
     {
         _submitted = true;
+
+        if (_formData == null)
+        {
+            Console.WriteLine("Error: _formData is null.");
+            return;
+        }
+
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7160/api/People");
-        var json = System.Text.Json.JsonSerializer.Serialize(_formData);
+        var data = new PersonDto()
+        {
+            FirstName = _formData.FirstName!,
+            LastName = _formData.LastName!,
+            BirthDate = (DateTime)_formData.BirthDate!,
+            DeathDate = _formData.DeathDate,
+        };
+        var json = System.Text.Json.JsonSerializer.Serialize(data);
         var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
         request.Content = content;
         try
         {
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            Console.WriteLine(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -77,10 +91,10 @@
     public class FormData
     {
         [Required(ErrorMessage = "Name is required")]
-        public string? Name { get; set; }
+        public string? FirstName { get; set; }
 
         [Required(ErrorMessage = "Surname is required")]
-        public string? Surname { get; set; }
+        public string? LastName { get; set; }
 
         [Required(ErrorMessage = "Birth Date is required")]
         [DataType(DataType.Date)]
