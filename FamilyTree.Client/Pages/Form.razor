@@ -28,6 +28,11 @@
         <InputDate id="deathDate" @bind-Value="_formData.DeathDate" class="form-control"/>
         <ValidationMessage For="@(() => _formData.DeathDate)"/>
     </div>
+    <div>
+        <label for="ParentId">Parent ID (Optional):</label>
+        <InputNumber id="ParentId" @bind-Value="_formData.ParentId" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.ParentId)"/>
+    </div>
     <br/>
     <button class="btn btn-primary">Submit</button>
 </EditForm>
@@ -40,6 +45,7 @@
         <li><strong>Surname:</strong> @_formData?.LastName</li>
         <li><strong>Birth Date:</strong> @_formData?.BirthDate?.ToShortDateString()</li>
         <li><strong>Death Date:</strong> @_formData?.DeathDate?.ToShortDateString()</li>
+        <li><strong>Parent ID:</strong> @_formData?.ParentId?.ToString() ?? "None"</li>
     </ul>
 }
 
@@ -66,12 +72,19 @@
 
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7160/api/People");
+
         var data = new PersonDto()
         {
             FirstName = _formData.FirstName!,
             LastName = _formData.LastName!,
             BirthDate = (DateTime)_formData.BirthDate!,
             DeathDate = _formData.DeathDate,
+            /*
+             * Current ParentId is manually set through the form
+             * Will be changed later with a UI way to get ParentId by selecting a parent through a dropdown menu with a serch bar and showing all the "Person" currently in the DB
+             * User will not see and need to use/handle ids
+             */
+            ParentId = _formData.ParentId,
         };
         var json = System.Text.Json.JsonSerializer.Serialize(data);
         var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
@@ -103,6 +116,8 @@
         [Required(ErrorMessage = "Death Date is required")]
         [DataType(DataType.Date)]
         public DateTime? DeathDate { get; set; }
+
+        public int? ParentId { get; set; }
     }
 
 }

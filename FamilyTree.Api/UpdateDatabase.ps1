@@ -1,2 +1,2 @@
-dotnet ef migrations add TableNameChange
+dotnet ef migrations add AddedParentId
 dotnet ef database update

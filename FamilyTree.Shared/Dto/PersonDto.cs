@@ -5,6 +5,7 @@ namespace FamilyTree.Shared.Dto;
 public class PersonDto
 {
     public int Id { get; set; }
+    public int? ParentId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateTime BirthDate { get; set; }
@@ -17,6 +18,7 @@ public class PersonDto
     public PersonDto(PersonEntity personEntity)
     {
         Id = personEntity.Id;
+        ParentId = personEntity.ParentId;
         FirstName = personEntity.FirstName;
         LastName = personEntity.LastName;
         BirthDate = personEntity.BirthDate;
