@@ -1,2 +1,2 @@
-dotnet ef migrations add AddedParentId
+dotnet ef migrations add AddParentChildRelation
 dotnet ef database update

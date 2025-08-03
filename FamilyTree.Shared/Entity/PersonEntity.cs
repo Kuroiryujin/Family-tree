@@ -9,15 +9,15 @@ namespace FamilyTree.Shared.Entity
     public class PersonEntity
     {
         [Key] public int Id { get; set; }
-        
-        public int? ParentId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
+        public int? ParentId { get; set; }
+
+        [ForeignKey("ParentId")] public PersonEntity? Parent { get; set; }
         
-        //[ForeignKey("ParentId")]
-        //public PersonEntity? Parent { get; set; }
+        public ICollection<PersonEntity> Children { get; set; } = new List<PersonEntity>();
 
         public PersonEntity()
         {
