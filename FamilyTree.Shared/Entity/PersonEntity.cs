@@ -12,7 +12,16 @@ namespace FamilyTree.Shared.Entity
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
-        public int? ParentId { get; set; }
+        public int? MotherId { get; set; }
+        public int? FatherId { get; set; }
+
+        [ForeignKey(nameof(MotherId))]
+        public PersonEntity? Mother { get; set; }
+
+        [ForeignKey(nameof(FatherId))]
+        public PersonEntity? Father { get; set; }
+
+        public ICollection<PersonEntity> Children { get; set; } = new List<PersonEntity>();
 
         public PersonEntity()
         {
@@ -21,7 +30,8 @@ namespace FamilyTree.Shared.Entity
         public PersonEntity(PersonDto personDto)
         {
             Id = personDto.Id;
-            ParentId = personDto.ParentId;
+            MotherId = personDto.MotherId;
+            FatherId = personDto.FatherId;
             FirstName = personDto.FirstName;
             LastName = personDto.LastName;
             BirthDate = personDto.BirthDate;

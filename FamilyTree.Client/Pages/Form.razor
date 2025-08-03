@@ -29,9 +29,14 @@
         <ValidationMessage For="@(() => _formData.DeathDate)"/>
     </div>
     <div>
-        <label for="ParentId">Parent ID (Optional):</label>
-        <InputNumber id="ParentId" @bind-Value="_formData.ParentId" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.ParentId)"/>
+        <label for="FatherId">Father Id (Optional):</label>
+        <InputNumber id="FatherId" @bind-Value="_formData.FatherId" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.FatherId)"/>
+    </div>
+    <div>
+        <label for="MotherId">Mother Id (Optional):</label>
+        <InputNumber id="MotherId" @bind-Value="_formData.MotherId" class="form-control"/>
+        <ValidationMessage For="@(() => _formData.MotherId)"/>
     </div>
     <br/>
     <button class="btn btn-primary">Submit</button>
@@ -45,7 +50,8 @@
         <li><strong>Surname:</strong> @_formData?.LastName</li>
         <li><strong>Birth Date:</strong> @_formData?.BirthDate?.ToShortDateString()</li>
         <li><strong>Death Date:</strong> @_formData?.DeathDate?.ToShortDateString()</li>
-        <li><strong>Parent ID:</strong> @_formData?.ParentId?.ToString() ?? "None"</li>
+        <li><strong>Parent ID:</strong> @_formData?.FatherId?.ToString() ?? "None"</li>
+        <li><strong>Parent ID:</strong> @_formData?.MotherId?.ToString() ?? "None"</li>
     </ul>
 }
 
@@ -80,11 +86,12 @@
             BirthDate = (DateTime)_formData.BirthDate!,
             DeathDate = _formData.DeathDate,
             /*
-             * Current ParentId is manually set through the form
-             * Will be changed later with a UI way to get ParentId by selecting a parent through a dropdown menu with a serch bar and showing all the "Person" currently in the DB
+             * Current Mother and Father IDs are manually set through the form
+             * Will be changed later with a UI way to get ParentIds by selecting parents through a dropdown menu with a serch bar and showing all the "Person" currently in the DB
              * User will not see and need to use/handle ids
              */
-            ParentId = _formData.ParentId,
+            FatherId = _formData.FatherId,
+            MotherId = _formData.FatherId,
         };
         var json = System.Text.Json.JsonSerializer.Serialize(data);
         var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
@@ -117,7 +124,8 @@
         [DataType(DataType.Date)]
         public DateTime? DeathDate { get; set; }
 
-        public int? ParentId { get; set; }
+        public int? FatherId { get; set; }
+        public int? MotherId { get; set; }
     }
 
 }
