@@ -1,2 +1,2 @@
-dotnet ef migrations add AddParentChildRelation
+dotnet ef migrations add RerollToSimpleParentIdStructure
 dotnet ef database update
