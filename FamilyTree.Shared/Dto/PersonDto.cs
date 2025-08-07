@@ -10,6 +10,8 @@ public class PersonDto
     public DateTime BirthDate { get; set; }
     public DateTime? DeathDate { get; set; }
     public Gender Gender { get; set; }
+    public List<int> ParentIds { get; set; } = [];
+
 
     public PersonDto()
     {
@@ -23,5 +25,6 @@ public class PersonDto
         BirthDate = personEntity.BirthDate;
         DeathDate = personEntity.DeathDate;
         Gender = personEntity.Gender;
+        ParentIds = personEntity.Parents.Select(p => p.Id).ToList();
     }
 }

@@ -1,32 +1,33 @@
 ﻿@page "/form"
 @using System.ComponentModel.DataAnnotations
 @using FamilyTree.Shared.Dto
+@inject HttpClient Http
 
-<h3>Form with Validation</h3>
+<h3>Form with Parent Selection</h3>
 
 <EditForm Model="_formData" OnValidSubmit="HandleValidSubmit" FormName="MainForm">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <div>
         <label for="name">Name:</label>
-        <InputText id="name" @bind-Value="_formData.FirstName" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.FirstName)"/>
+        <InputText id="name" @bind-Value="_formData.FirstName" class="form-control" />
+        <ValidationMessage For="@(() => _formData.FirstName)" />
     </div>
     <div>
         <label for="surname">Surname:</label>
-        <InputText id="surname" @bind-Value="_formData.LastName" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.LastName)"/>
+        <InputText id="surname" @bind-Value="_formData.LastName" class="form-control" />
+        <ValidationMessage For="@(() => _formData.LastName)" />
     </div>
     <div>
         <label for="birthDate">Birth Date:</label>
-        <InputDate id="birthDate" @bind-Value="_formData.BirthDate" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.BirthDate)"/>
+        <InputDate id="birthDate" @bind-Value="_formData.BirthDate" class="form-control" />
+        <ValidationMessage For="@(() => _formData.BirthDate)" />
     </div>
     <div>
         <label for="deathDate">Death Date:</label>
-        <InputDate id="deathDate" @bind-Value="_formData.DeathDate" class="form-control"/>
-        <ValidationMessage For="@(() => _formData.DeathDate)"/>
+        <InputDate id="deathDate" @bind-Value="_formData.DeathDate" class="form-control" />
+        <ValidationMessage For="@(() => _formData.DeathDate)" />
     </div>
     <div>
         <label for="gender">Gender:</label>
@@ -38,8 +39,20 @@
         </InputSelect>
         <ValidationMessage For="@(() => _formData.Gender)" />
     </div>
+    
+    <!-- Parent selection -->
+    <div>
+        <label for="parents">Parents:</label>
+        <InputSelect id="parents" class="form-control" @bind-Value="_selectedParentIds" multiple>
+            <option value="">-- Select Parent(s) --</option>
+            @foreach (var person in _availableParents)
+            {
+                <option value="@person.Id">@person.FirstName @person.LastName</option>
+            }
+        </InputSelect>
+    </div>
 
-    <br/>
+    <br />
     <button class="btn btn-primary">Submit</button>
 </EditForm>
 
@@ -47,50 +60,41 @@
 {
     <p>You submitted successfully!</p>
     <ul>
-        <li><strong>Name:</strong> @_formData?.FirstName</li>
-        <li><strong>Surname:</strong> @_formData?.LastName</li>
-        <li><strong>Birth Date:</strong> @_formData?.BirthDate?.ToShortDateString()</li>
-        <li><strong>Death Date:</strong> @_formData?.DeathDate?.ToShortDateString()</li>
+        <li><strong>Name:</strong> @_formData.FirstName</li>
+        <li><strong>Surname:</strong> @_formData.LastName</li>
+        <li><strong>Birth Date:</strong> @_formData.BirthDate?.ToShortDateString()</li>
+        <li><strong>Death Date:</strong> @_formData.DeathDate?.ToShortDateString()</li>
+        <li><strong>Parents:</strong> @(string.Join(", ", _formData.ParentIds))</li>
     </ul>
 }
 
 @code {
     private FormData _formData = new FormData();
     private bool _submitted = false;
+    private List<PersonDto> _availableParents = [];
+    private List<int> _selectedParentIds = [];
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _formData ??= new FormData();
-        base.OnInitialized();
-    }
+        _formData = new FormData();
 
+        _availableParents = await Http.GetFromJsonAsync<List<PersonDto>>("https://localhost:7160/api/People") ?? [];
+    }
 
     private async Task HandleValidSubmit()
     {
         _submitted = true;
 
-        var client = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7160/api/People");
+        _formData.ParentIds = _selectedParentIds;
 
-        var data = new PersonDto()
+        var response = await Http.PostAsJsonAsync("https://localhost:7160/api/People", _formData);
+        if (response.IsSuccessStatusCode)
         {
-            FirstName = _formData.FirstName!,
-            LastName = _formData.LastName!,
-            BirthDate = (DateTime)_formData.BirthDate!,
-            DeathDate = _formData.DeathDate,
-        };
-        var json = System.Text.Json.JsonSerializer.Serialize(data);
-        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-        request.Content = content;
-        try
-        {
-            var response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            Console.WriteLine("Form submitted successfully.");
         }
-        catch (Exception e)
+        else
         {
-            Console.WriteLine($"Error: {e.Message}");
-            throw;
+            Console.WriteLine("Failed to submit the form.");
         }
     }
 
@@ -109,9 +113,10 @@
         [Required(ErrorMessage = "Death Date is required")]
         [DataType(DataType.Date)]
         public DateTime? DeathDate { get; set; }
-        
+
         [Required(ErrorMessage = "Gender is required")]
         public string? Gender { get; set; }
-    }
 
+        public List<int> ParentIds { get; set; } = [];
+    }
 }

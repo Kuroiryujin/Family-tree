@@ -39,12 +39,31 @@ namespace FamilyTree.Api.Controllers
 
         // POST: api/people
         [HttpPost]
-        public async Task<ActionResult<PersonDto>> PostPerson(PersonDto person)
+        public async Task<ActionResult<PersonDto>> PostPerson(PersonDto personDto)
         {
-            _context.People.Add(new PersonEntity(person));
+            // Map the PersonDto to a new PersonEntity
+            var personEntity = new PersonEntity(personDto);
+
+            // Retrieve and add parents based on ParentIds from the database
+            if (personDto.ParentIds != null && personDto.ParentIds.Count != 0)
+            {
+                var parents = await _context.People
+                    .Where(p => personDto.ParentIds.Contains(p.Id))
+                    .ToListAsync();
+
+                foreach (var parent in parents)
+                {
+                    personEntity.Parents.Add(parent);
+                    parent.Children.Add(personEntity);
+                }
+            }
+
+            _context.People.Add(personEntity);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+
+            return CreatedAtAction("GetPerson", new { id = personEntity.Id }, new PersonDto(personEntity));
         }
+
 
         // PUT: api/people/{id}
         [HttpPut("{id:int}")]
