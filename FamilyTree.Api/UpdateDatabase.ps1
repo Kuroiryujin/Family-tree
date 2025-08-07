@@ -1,2 +1,2 @@
-dotnet ef migrations add FatherAndMotherIdStructure
+dotnet ef migrations add UpdateIcollectionsParentsChildrens
 dotnet ef database update

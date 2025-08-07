@@ -5,7 +5,6 @@ namespace FamilyTree.Api.Data
 {
     public class AppDbContext : DbContext
     {
-        // Constructor accepting options
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -16,18 +15,15 @@ namespace FamilyTree.Api.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PersonEntity>(entity =>
-            {
-                entity.HasOne(p => p.Mother)
-                    .WithMany()
-                    .HasForeignKey(p => p.MotherId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(p => p.Father)
-                    .WithMany()
-                    .HasForeignKey(p => p.FatherId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            // Many-to-many relationship between Parents and Children
+            modelBuilder.Entity<PersonEntity>()
+                .HasMany(p => p.Parents)
+                .WithMany(p => p.Children)
+                .UsingEntity<Dictionary<string, object>>(
+                    "PersonRelationship", // Junction table name
+                    j => j.HasOne<PersonEntity>().WithMany().HasForeignKey("ParentId"),
+                    j => j.HasOne<PersonEntity>().WithMany().HasForeignKey("ChildId")
+                );
         }
     }
 }
