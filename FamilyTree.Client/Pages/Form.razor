@@ -58,12 +58,6 @@
     {
         _submitted = true;
 
-        if (_formData == null)
-        {
-            Console.WriteLine("Error: _formData is null.");
-            return;
-        }
-
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7160/api/People");
 
