@@ -14,8 +14,8 @@
         <ValidationMessage For="@(() => _formData.FirstName)"/>
     </div>
     <div>
-        <label for="Surname">Surname:</label>
-        <InputText id="Surname" @bind-Value="_formData.LastName" class="form-control"/>
+        <label for="surname">Surname:</label>
+        <InputText id="surname" @bind-Value="_formData.LastName" class="form-control"/>
         <ValidationMessage For="@(() => _formData.LastName)"/>
     </div>
     <div>
@@ -44,7 +44,7 @@
 }
 
 @code {
-    private FormData? _formData;
+    private FormData _formData = new FormData();
     private bool _submitted = false;
 
     protected override void OnInitialized()
