@@ -9,10 +9,7 @@ public class PersonDto
     public string LastName { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime? DeathDate { get; set; }
-    public int? Parent1Id { get; set; }
-    public int? Parent2Id { get; set; }
-
-    public List<PersonDto>? Children { get; set; }
+    public Gender Gender { get; set; }
 
     public PersonDto()
     {
@@ -25,6 +22,6 @@ public class PersonDto
         LastName = personEntity.LastName;
         BirthDate = personEntity.BirthDate;
         DeathDate = personEntity.DeathDate;
-
+        Gender = personEntity.Gender;
     }
 }

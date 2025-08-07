@@ -13,6 +13,7 @@ namespace FamilyTree.Shared.Entity
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
+        public Gender Gender { get; set; }
 
         public ICollection<PersonEntity> Parents { get; set; } = new List<PersonEntity>();
         public ICollection<PersonEntity> Children { get; set; } = new List<PersonEntity>();
@@ -28,7 +29,7 @@ namespace FamilyTree.Shared.Entity
             LastName = personDto.LastName;
             BirthDate = personDto.BirthDate;
             DeathDate = personDto.DeathDate;
-
+            Gender = personDto.Gender;
         }
     }
 }

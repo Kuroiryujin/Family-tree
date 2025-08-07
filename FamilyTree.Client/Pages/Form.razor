@@ -28,6 +28,17 @@
         <InputDate id="deathDate" @bind-Value="_formData.DeathDate" class="form-control"/>
         <ValidationMessage For="@(() => _formData.DeathDate)"/>
     </div>
+    <div>
+        <label for="gender">Gender:</label>
+        <InputSelect id="gender" @bind-Value="_formData.Gender" class="form-control">
+            @foreach (var gender in Enum.GetValues<FamilyTree.Shared.Gender>())
+            {
+                <option value="@gender">@gender</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => _formData.Gender)" />
+    </div>
+
     <br/>
     <button class="btn btn-primary">Submit</button>
 </EditForm>
@@ -98,6 +109,9 @@
         [Required(ErrorMessage = "Death Date is required")]
         [DataType(DataType.Date)]
         public DateTime? DeathDate { get; set; }
+        
+        [Required(ErrorMessage = "Gender is required")]
+        public string? Gender { get; set; }
     }
 
 }
